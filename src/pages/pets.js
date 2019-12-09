@@ -1,22 +1,41 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, TextInput } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import api from '../services/api';
 
 export default class Pets extends Component {
     static navigationOptions = {
-        header: null
+        title: 'Lista de Pets',
     };
+
+    state = {
+        pets: [],
+    }
+ 
+    async componentDidMount(){
+        const response = await api.get('/pets');
+        const pets = response.data;
+        this.setState({ pets });
+    }
 
     render() {
 
         return (
             <View style={styles.body}>
-                <Image
-                    source={require('../img/dog_icon.png')}
-                    style={styles.imagem}
-                />
-                <Text style={styles.petsapp}>Nome</Text>
-                <Text style={styles.petsapp}>Raça</Text>
+                
+                { this.state.pets.map(pet => (
+                    <View key={pet._id} style={styles.info}>
+                        <Image
+                            source={require('../img/dog_icon.png')}
+                            style={styles.imagem}
+                        />
+                        <View style={styles.textos}>
+                            <Text style={styles.nome}>NOME: {pet.name}</Text>
+                            <Text style={styles.raca}>RAÇA: {pet.raca}</Text>
+                        </View>
+                    </View>
+                ))}
+
             </View>
         )
     }
@@ -25,66 +44,41 @@ export default class Pets extends Component {
 const styles = StyleSheet.create({
     body: {
         flex: 1,
-        alignItems: 'center'
-    },
-    petsapp: {
-        fontSize: 40,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: '#454040'
+        alignItems: 'center',
+        backgroundColor: '#a6a6a6',
     },
     imagem: {
         width: 100,
+        height: 100
+    },
+    info: {
+        borderWidth: 1,
+        borderColor: '#454040',
+        width: '90%',
+        margin: 10,
+        borderRadius: 20,
         height: 100,
-        marginTop: 50
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#ededed"
     },
-    textUserName: {
-        fontSize: 20,
-        textAlign: 'center',
-        color: '#454040',
-        marginTop: 100,
-        borderBottomWidth: 2,
-        width: '80%'
+    textos: {
+        borderLeftWidth: 1,
+        borderColor: '#454040',
+        marginLeft: 5
     },
-    conta: {
-        fontSize: 16,
-        textAlign: 'center',
-        color: Colors.Black,
-        marginTop: 135,
-        color: '#454040'
+    nome: {
+        fontSize: 18,
+        marginLeft: 10,
+        marginTop: 20,
+        borderBottomColor: '#454040',
+        borderBottomWidth: 1,
+        paddingBottom: 10,
+        width: 230
     },
-    login: {
-        width: '70%',
-        bottom: 0,
-        height: 45,
-        borderRadius: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#454040',
-        marginTop: 50
-    },
-    textCadastrar: {
-        color: 'white',
-        fontSize: 20
-    },
-    textPassword: {
-        fontSize: 20,
-        textAlign: 'center',
-        color: 'black',
-        borderBottomWidth: 2,
-        width: '80%',
-        marginTop: 20
-    },
-    forgotPassword: {
-        fontSize: 20,
-        textAlign: 'center',
-        color: '#454040',
-        marginTop: 30
-    },
-    signin: {
-        fontSize: 20,
-        textAlign: 'center',
-        color: '#454040',
-        marginTop: 30
+    raca: {
+        fontSize: 18,
+        marginLeft: 10,
+        marginTop: 5
     }
 });

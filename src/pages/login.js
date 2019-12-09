@@ -24,9 +24,9 @@ export default class Login extends Component {
                     >
                 </TextInput>
                 <TouchableOpacity
-                    style={styles.login}>
-                    <Text style={styles.textCadastrar}
-                    onPress={() => this.props.navigation.navigate('Pets')}>LOGIN</Text>
+                    style={styles.login}
+                    onPress={() => this.props.navigation.navigate('Pets')}>
+                    <Text style={styles.textCadastrar}>LOGIN</Text>
                 </TouchableOpacity>
                 <Text style={styles.forgotPassword}>ESQUECEU A SENHA?</Text>
                 <Text style={styles.signin}>SEM CONTA? CADASTRE-SE.</Text>
